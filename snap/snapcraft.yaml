@@ -1,25 +1,56 @@
----
 name: openfortivpn
-version: git
-base: core18
 summary: openfortivpn, a PPP+SSL VPN client
 description: |
     Openfortivpn is a client for PPP+SSL VPN tunnel services.
     It spawns a pppd process and operates the communication between
     the gateway and this process.
+license: GPL-3.0
+adopt-info: openfortivpn
 confinement: strict
-grade: stable
+base: core18
+
+architectures:
+    - build-on: amd64
+
+layout:
+    /usr/sbin/pppd:
+        bind-file: $SNAP/usr/sbin/pppd
+    /etc/openfortivpn:
+        bind: $SNAP/etc/openfortivpn
 
 apps:
     openfortivpn:
         command: openfortivpn
-        plugs: [network-bind]
+        plugs:
+            - network-bind
+            - ppp
+            - network-control
 
 parts:
     openfortivpn:
-        plugin: autotools
         source: .
+        plugin: autotools
+        configflags:
+            - --with-pppd=/usr/sbin/pppd
         build-packages:
+            - git
             - build-essential
             - pkg-config
             - libssl-dev
+            - libsystemd-dev
+        stage-packages:
+            - ppp
+        # Infer version from Git tags:
+        # * Remove the leading "v" from openfortivpn Git tags.
+        # * We propose specific Git tags for openfortivpn snaps, if needed.
+        #   Thay have a leading "sv" for "snap version" and we remove this
+        #   leading "sv" too.
+        # Infer grade from version:
+        # * Tagged commits are considered "stable".
+        # * Other commits are considered "devel".
+        override-pull: |
+            snapcraftctl pull
+            version="$(git describe --always | sed -e 's/^s\{,1\}v//;s/-/+git/;y/-/./')"
+            [ -n "$(echo $version | grep "+git")" ] && grade=devel || grade=stable
+            snapcraftctl set-version "$version"
+            snapcraftctl set-grade "$grade"
