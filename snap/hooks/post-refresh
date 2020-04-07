@@ -1,0 +1,11 @@
+#!/bin/sh -e
+
+OPENFORTIVPN_TEMPLATE="${SNAP}/share/openfortivpn/config.template"
+OPENFORTIVPN_CONFIG="${SNAP_COMMON}/config"
+
+if [ -f "$OPENFORTIVPN_CONFIG" ]; then
+	echo "Existing configuration file will not be overwritten"
+else
+	sed -e '3,$ s/^/# /' "$OPENFORTIVPN_TEMPLATE" > "$OPENFORTIVPN_CONFIG"
+	chmod 600 "$OPENFORTIVPN_CONFIG"
+fi
