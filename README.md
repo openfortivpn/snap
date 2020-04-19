@@ -18,14 +18,7 @@ Installing
 
 Install the snap from the [Snap Store](https://snapcraft.io/store):
 ```
-sudo snap install openfortivpn
-```
-
-Until the _openfortivpn_ snap is authorized to auto-connect, you need to 
-connect these two _plugs_ manually:
-```
-sudo snap connect openfortivpn:ppp
-sudo snap connect openfortivpn:network-control
+sudo snap install --beta openfortivpn
 ```
 
 
