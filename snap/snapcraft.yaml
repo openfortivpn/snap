@@ -19,6 +19,8 @@ architectures:
 layout:
     /usr/sbin/pppd:
         bind-file: $SNAP/usr/sbin/pppd
+    /sbin/resolvconf:
+        bind-file: $SNAP/sbin/resolvconf
     /etc/openfortivpn:
         bind: $SNAP_COMMON
 
@@ -36,6 +38,7 @@ parts:
         plugin: autotools
         configflags:
             - --with-pppd=/usr/sbin/pppd
+            - --with-resolvconf=/sbin/resolvconf
         build-packages:
             - git
             - build-essential
@@ -44,9 +47,14 @@ parts:
             - libsystemd-dev
         stage-packages:
             - ppp
+            - resolvconf
         stage:
             - bin/openfortivpn
+            - etc/network/*
             - etc/ppp/*
+            - etc/resolvconf/*
+            - lib/resolvconf/list-records
+            - sbin/resolvconf
             - share/*
             - usr/sbin/pppd
             - usr/lib
