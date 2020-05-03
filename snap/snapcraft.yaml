@@ -7,7 +7,7 @@ description: |
     the gateway and this process.
 license: GPL-3.0
 adopt-info: openfortivpn
-base: core
+base: core18
 confinement: strict
 grade: stable
 
@@ -17,6 +17,10 @@ architectures:
     - build-on: amd64
 
 layout:
+    /usr/sbin/pppd:
+        bind-file: $SNAP/usr/sbin/pppd
+    /sbin/resolvconf:
+        bind-file: $SNAP/sbin/resolvconf
     /etc/openfortivpn:
         bind: $SNAP_COMMON
 
@@ -41,9 +45,20 @@ parts:
             - pkg-config
             - libssl-dev
             - libsystemd-dev
+        stage-packages:
+            - ppp
+            - resolvconf
         stage:
             - bin/openfortivpn
+            - etc/network/*
+            - etc/ppp/*
+            - etc/resolvconf/*
+            - lib/resolvconf/list-records
+            - sbin/resolvconf
             - share/*
+            - usr/sbin/pppd
+            - usr/lib
+            - usr/share/ppp
         # Infer version from Git tags:
         # * Remove the leading "v" from openfortivpn Git tags.
         # * We propose specific Git tags for openfortivpn snaps, if needed.
