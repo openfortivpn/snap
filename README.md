@@ -1,6 +1,8 @@
 -----
 
-**I don't have time to maintain this snap any more, so I have archived this repository. Besides, I don't think it makes sense to package a VPN in a snap. A VPN interferes a lot with the operating system so insisting in running it in a sandbox doesn't make much sense or isn't worth the pain any way.**
+**I don't have time to maintain this snap any more, so I have archived the repository.**
+
+**Besides, I don't think it makes sense to package a VPN in a snap: a VPN client interferes a lot with the operating system, running it inside a sandbox doesn't make much sense or isn't worth the pain any way.**
 
 -----
 
